@@ -57,6 +57,13 @@ if (form) {
     btnLabel.textContent = 'Wird gesendet...';
     submitBtn.disabled = true;
 
+    // Reply-To automatisch auf Kunden-E-Mail setzen
+    const emailInput = form.querySelector('input[name="email"]');
+    const replyToField = document.getElementById('replyto-field');
+    if (emailInput && replyToField) {
+      replyToField.value = emailInput.value;
+    }
+
     const data = new FormData(form);
 
     try {
