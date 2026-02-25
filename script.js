@@ -38,26 +38,47 @@ const revealObserver = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-/* === Contact Form === */
+/* === Contact Form (Formspree) ===
+   Schritt 1: Kostenlos registrieren auf https://formspree.io
+   Schritt 2: Neues Formular erstellen → Sie erhalten eine ID (z.B. "xpwzabcd")
+   Schritt 3: Ihre ID unten eintragen, fertig!
+*/
+const FORMSPREE_ID = 'IHRE_FORMSPREE_ID'; // ← Hier Ihre ID eintragen
+
 const form       = document.getElementById('contact-form');
 const submitBtn  = document.getElementById('submit-btn');
 const btnLabel   = document.getElementById('btn-label');
 const successMsg = document.getElementById('form-success');
 
 if (form) {
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
 
     btnLabel.textContent = 'Wird gesendet...';
     submitBtn.disabled = true;
 
-    // Simulate send – replace with real backend/API call
-    setTimeout(() => {
-      form.reset();
-      successMsg.classList.add('show');
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        form.reset();
+        successMsg.classList.add('show');
+        setTimeout(() => successMsg.classList.remove('show'), 7000);
+      } else {
+        const json = await res.json();
+        alert('Fehler beim Senden: ' + (json?.errors?.map(e => e.message).join(', ') || 'Bitte versuchen Sie es erneut.'));
+      }
+    } catch {
+      alert('Verbindungsfehler. Bitte prüfen Sie Ihre Internetverbindung.');
+    } finally {
       btnLabel.textContent = 'Kostenlos anfragen →';
       submitBtn.disabled = false;
-      setTimeout(() => successMsg.classList.remove('show'), 7000);
-    }, 1200);
+    }
   });
 }
