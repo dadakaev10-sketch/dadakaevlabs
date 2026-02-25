@@ -43,7 +43,7 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
    Schritt 2: Neues Formular erstellen → Sie erhalten eine ID (z.B. "xpwzabcd")
    Schritt 3: Ihre ID unten eintragen, fertig!
 */
-const FORMSPREE_ID = 'IHRE_FORMSPREE_ID'; // ← Hier Ihre ID eintragen
+const FORMSPREE_ID = 'mqedwvbb';
 
 const form       = document.getElementById('contact-form');
 const submitBtn  = document.getElementById('submit-btn');
